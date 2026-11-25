@@ -83,7 +83,7 @@ img {
 }
 
 .brand {
-  font-size: clamp(1.2rem, 2.1vw, 1.6rem);
+  font-size: clamp(1.25rem, 2.2vw, 1.65rem);
   color: #fff;
   text-decoration: none;
   transition: color 0.3s ease;
@@ -96,13 +96,13 @@ img {
 .nav-links {
   display: flex;
   align-items: center;
-  gap: 22px;
+  gap: 24px;
 }
 
 .nav-links a {
   color: #fff;
   text-decoration: none;
-  font-size: 0.94rem;
+  font-size: 0.95rem;
   font-weight: 500;
   white-space: nowrap;
   transition: color 0.25s ease, opacity 0.25s ease;
@@ -251,7 +251,7 @@ img {
 
 .section-head {
   text-align: center;
-  max-width: 660px;
+  max-width: 640px;
   margin: 0 auto 46px;
 }
 
@@ -457,118 +457,6 @@ img {
   font-size: 0.88rem;
 }
 
-/* Customer Reviews */
-.rating-summary {
-  margin-top: 16px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 6px;
-}
-
-.stars {
-  font-size: 1.25rem;
-  letter-spacing: 2px;
-}
-
-.rating-score {
-  font-family: "Cormorant Garamond", Georgia, serif;
-  font-size: 2rem;
-  font-weight: 700;
-  color: var(--ink);
-}
-
-.rating-sub {
-  color: var(--muted);
-  font-size: 0.95rem;
-}
-
-.google-rate-btn {
-  margin-top: 8px;
-  background: var(--surface);
-  color: var(--ink);
-  border: 1px solid var(--border);
-  box-shadow: var(--shadow);
-}
-
-.google-rate-btn:hover {
-  background: var(--accent);
-  color: #fff;
-  border-color: var(--accent);
-}
-
-.reviews-layout {
-  display: grid;
-  grid-template-columns: 1.2fr 0.95fr;
-  gap: 28px;
-  align-items: start;
-}
-
-.reviews-list {
-  display: grid;
-  gap: 16px;
-}
-
-.review-card {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 20px;
-  box-shadow: var(--shadow);
-}
-
-.review-top {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 12px;
-  margin-bottom: 8px;
-}
-
-.review-stars {
-  font-size: 0.95rem;
-}
-
-.review-card p {
-  color: var(--muted);
-  font-size: 0.94rem;
-}
-
-.review-form {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 26px;
-  box-shadow: var(--shadow);
-  display: grid;
-  gap: 14px;
-}
-
-.review-form h3,
-.booking-form h3 {
-  font-size: 1.65rem;
-}
-
-.review-form input,
-.review-form select,
-.review-form textarea,
-.booking-form input,
-.booking-form select {
-  width: 100%;
-  padding: 12px 14px;
-  border-radius: 10px;
-  border: 1px solid var(--border);
-  font-family: inherit;
-  font-size: 0.95rem;
-  background: var(--bg);
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
-}
-
-.review-form textarea {
-  resize: vertical;
-  min-height: 96px;
-}
-
 /* Contact & Booking Validation */
 .contact-box {
   display: grid;
@@ -581,49 +469,8 @@ img {
   box-shadow: var(--shadow);
 }
 
-.studio-address {
-  font-style: normal;
-  color: var(--muted);
-  font-size: 0.98rem;
-  line-height: 1.7;
-  margin-top: 8px;
-}
-
-.contact-links {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  margin-top: 18px;
-}
-
-.contact-pill {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 10px 16px;
-  border-radius: 999px;
-  background: var(--bg);
-  border: 1px solid var(--border);
-  color: var(--ink);
-  text-decoration: none;
-  font-size: 0.9rem;
-  font-weight: 600;
-  transition: all 0.2s ease;
-}
-
-.contact-pill:hover,
-.instagram-pill {
-  background: var(--accent);
-  border-color: var(--accent);
-  color: #fff;
-}
-
-.instagram-pill:hover {
-  background: var(--accent-dark);
-}
-
 .booked-slots-note {
-  margin-top: 20px;
+  margin-top: 18px;
   padding: 14px 16px;
   border-radius: 12px;
   background: var(--bg);
@@ -648,8 +495,21 @@ img {
   gap: 12px;
 }
 
-.invalid {
-  border-color: var(--error) !important;
+.booking-form input,
+.booking-form select {
+  width: 100%;
+  padding: 12px 14px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  font-family: inherit;
+  font-size: 0.95rem;
+  background: var(--bg);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.booking-form input.invalid,
+.booking-form select.invalid {
+  border-color: var(--error);
   box-shadow: 0 0 0 3px rgba(180, 35, 24, 0.12);
 }
 
@@ -768,7 +628,7 @@ img {
 
 @media (max-width: 900px) {
   .services-grid { grid-template-columns: repeat(2, 1fr); }
-  .about-grid, .contact-box, .reviews-layout { grid-template-columns: 1fr; }
+  .about-grid, .contact-box { grid-template-columns: 1fr; }
 }
 
 @media (max-width: 680px) {
