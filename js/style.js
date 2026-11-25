@@ -150,91 +150,6 @@ document.addEventListener("DOMContentLoaded", () => {
     if (e.key === "ArrowRight") openLightbox(currentIndex + 1);
   });
 
-  // Customer Review Submission
-  const reviewForm = document.getElementById("reviewForm");
-  const reviewerName = document.getElementById("reviewerName");
-  const reviewRating = document.getElementById("reviewRating");
-  const reviewText = document.getElementById("reviewText");
-  const reviewStatus = document.getElementById("reviewStatus");
-  const reviewsList = document.getElementById("reviewsList");
-
-  const setFieldInvalid = (el, isInvalid) => {
-    if (!el) return;
-    el.classList.toggle("invalid", isInvalid);
-  };
-
-  const setStatus = (el, message, type) => {
-    if (!el) return;
-    el.textContent = message;
-    el.className = `form-status ${type || ""}`.trim();
-  };
-
-  [reviewerName, reviewRating, reviewText].forEach((input) => {
-    input?.addEventListener("input", () => {
-      setFieldInvalid(input, false);
-      setStatus(reviewStatus, "", "");
-    });
-    input?.addEventListener("change", () => {
-      setFieldInvalid(input, false);
-      setStatus(reviewStatus, "", "");
-    });
-  });
-
-  reviewForm?.addEventListener("submit", (e) => {
-    e.preventDefault();
-    const name = reviewerName?.value.trim() || "";
-    const rating = parseInt(reviewRating?.value || "0", 10);
-    const experience = reviewText?.value.trim() || "";
-
-    setFieldInvalid(reviewerName, false);
-    setFieldInvalid(reviewRating, false);
-    setFieldInvalid(reviewText, false);
-
-    if (!name) {
-      setFieldInvalid(reviewerName, true);
-      setStatus(reviewStatus, "Please enter your name.", "error");
-      reviewerName?.focus();
-      return;
-    }
-
-    if (!rating || rating < 1 || rating > 5) {
-      setFieldInvalid(reviewRating, true);
-      setStatus(reviewStatus, "Please select a rating.", "error");
-      reviewRating?.focus();
-      return;
-    }
-
-    if (!experience) {
-      setFieldInvalid(reviewText, true);
-      setStatus(reviewStatus, "Please write your experience before submitting.", "error");
-      reviewText?.focus();
-      return;
-    }
-
-    const card = document.createElement("article");
-    card.className = "review-card visible";
-
-    const top = document.createElement("div");
-    top.className = "review-top";
-
-    const author = document.createElement("strong");
-    author.textContent = name;
-
-    const stars = document.createElement("span");
-    stars.className = "review-stars";
-    stars.textContent = "⭐".repeat(rating);
-
-    const body = document.createElement("p");
-    body.textContent = `"${experience}"`;
-
-    top.append(author, stars);
-    card.append(top, body);
-    reviewsList?.prepend(card);
-
-    setStatus(reviewStatus, "Thank you! Your review has been added.", "success");
-    reviewForm.reset();
-  });
-
   // Confirmation Validation (Date, Time & Existing Slot Check)
   const bookingForm = document.getElementById("bookingForm");
   const nameInput = document.getElementById("clientName");
@@ -244,9 +159,11 @@ document.addEventListener("DOMContentLoaded", () => {
   const formStatus = document.getElementById("formStatus");
   const bookedSlotsList = document.getElementById("bookedSlotsList");
 
+  // Prevent picking past calendar dates
   const todayStr = new Date().toISOString().split("T")[0];
   if (dateInput) dateInput.min = todayStr;
 
+  // Existing booked slots (date + time)
   const bookedSlots = [
     { date: "2026-12-05", time: "10:00", service: "Bridal Makeup" },
     { date: "2026-12-05", time: "14:30", service: "Halad & Mehndi Looks" },
@@ -261,10 +178,21 @@ document.addEventListener("DOMContentLoaded", () => {
   };
   renderBookedSlots();
 
+  const setFieldInvalid = (el, isInvalid) => {
+    if (!el) return;
+    el.classList.toggle("invalid", isInvalid);
+  };
+
+  const showStatus = (message, type) => {
+    if (!formStatus) return;
+    formStatus.textContent = message;
+    formStatus.className = `form-status ${type || ""}`.trim();
+  };
+
   [nameInput, phoneInput, dateInput, timeInput].forEach((input) => {
     input?.addEventListener("input", () => {
       setFieldInvalid(input, false);
-      setStatus(formStatus, "", "");
+      showStatus("", "");
     });
   });
 
@@ -284,14 +212,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (!name) {
       setFieldInvalid(nameInput, true);
-      setStatus(formStatus, "Please enter your name before confirming.", "error");
+      showStatus("Please enter your name before confirming.", "error");
       nameInput?.focus();
       return;
     }
 
     if (phoneDigits.length < 10) {
       setFieldInvalid(phoneInput, true);
-      setStatus(formStatus, "Please enter a valid 10-digit phone/WhatsApp number.", "error");
+      showStatus("Please enter a valid 10-digit phone/WhatsApp number.", "error");
       phoneInput?.focus();
       return;
     }
@@ -299,21 +227,21 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!selectedDate && !selectedTime) {
       setFieldInvalid(dateInput, true);
       setFieldInvalid(timeInput, true);
-      setStatus(formStatus, "Cannot confirm: please select both an appointment date and time.", "error");
+      showStatus("Cannot confirm: please select both an appointment date and time.", "error");
       dateInput?.focus();
       return;
     }
 
     if (!selectedDate) {
       setFieldInvalid(dateInput, true);
-      setStatus(formStatus, "Cannot confirm: appointment date is not selected.", "error");
+      showStatus("Cannot confirm: appointment date is not selected.", "error");
       dateInput?.focus();
       return;
     }
 
     if (!selectedTime) {
       setFieldInvalid(timeInput, true);
-      setStatus(formStatus, "Cannot confirm: appointment time is not selected.", "error");
+      showStatus("Cannot confirm: appointment time is not selected.", "error");
       timeInput?.focus();
       return;
     }
@@ -322,7 +250,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (Number.isNaN(chosenDateTime.getTime()) || chosenDateTime <= new Date()) {
       setFieldInvalid(dateInput, true);
       setFieldInvalid(timeInput, true);
-      setStatus(formStatus, "Cannot confirm: please choose a future date and time.", "error");
+      showStatus("Cannot confirm: please choose a future date and time.", "error");
       return;
     }
 
@@ -332,8 +260,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (alreadyBooked) {
       setFieldInvalid(dateInput, true);
       setFieldInvalid(timeInput, true);
-      setStatus(
-        formStatus,
+      showStatus(
         `Slot unavailable: ${selectedDate} at ${selectedTime} is already booked at Dipali Beauty Palour, Asoda. Please choose another time or date.`,
         "error"
       );
@@ -341,10 +268,10 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
+    // Confirm and record slot in current session
     bookedSlots.push({ date: selectedDate, time: selectedTime, service });
     renderBookedSlots();
-    setStatus(
-      formStatus,
+    showStatus(
       `Confirmed for ${name} — ${service} on ${selectedDate} at ${selectedTime} (Dipali Beauty Palour, Asoda).`,
       "success"
     );
